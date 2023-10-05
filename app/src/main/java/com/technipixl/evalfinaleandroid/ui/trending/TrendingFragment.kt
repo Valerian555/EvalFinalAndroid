@@ -26,7 +26,11 @@ class TrendingFragment : Fragment() {
     ): View? {
         binding = FragmentTrendingBinding.inflate(layoutInflater)
 
-        retrieveTrendingMovies()
+        if (Utilities.isNetworkAvailable(requireContext())) {
+            retrieveTrendingMovies()
+        } else {
+            Utilities.showToast(requireContext())
+        }
 
         return binding.root
     }
@@ -55,7 +59,7 @@ class TrendingFragment : Fragment() {
     private fun setupRecyclerView(movieResponse: MovieResponse) {
         binding.trendingRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         adapter = TrendingAdapter(movieResponse) { movie ->
-           // détail
+            // détail
         }
         binding.trendingRecyclerView.adapter = adapter
     }

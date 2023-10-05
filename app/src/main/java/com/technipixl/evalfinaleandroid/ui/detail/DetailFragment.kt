@@ -32,15 +32,18 @@ class DetailFragment : Fragment() {
     ): View {
         binding = FragmentDetailBinding.inflate(layoutInflater)
 
-        //récupération des films similaires
-        retrieveMovieDetail(args.movieId)
+        if(Utilities.isNetworkAvailable(requireContext())) {
+            //récupération des films similaires
+            retrieveMovieDetail(args.movieId)
+            retrieveSimilarMovies(args.movieId)
+        } else {
+            Utilities.showToast(requireContext())
+        }
 
-        //retour au frgament précédent
+        //retour au fragment précédent
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
         }
-
-        retrieveSimilarMovies(args.movieId)
 
         return binding.root
     }

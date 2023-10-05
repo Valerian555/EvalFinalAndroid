@@ -1,6 +1,11 @@
 package com.technipixl.evalfinaleandroid
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import com.squareup.picasso.Picasso
 import com.technipixl.evalfinaleandroid.network.service.MovieServiceImpl
 import kotlin.math.roundToInt
@@ -24,5 +29,23 @@ object Utilities {
                         .fit()
                         .centerCrop()
                         .into(imageView)
+        }
+
+        fun isNetworkAvailable(context: Context): Boolean {
+                val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+                val currentNetwork = connectivityManager.activeNetwork
+                val networkCapabilities =
+                        connectivityManager.getNetworkCapabilities(currentNetwork)
+
+                return networkCapabilities?.run {
+                        hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                                hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                                hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+                } ?: false
+        }
+
+        fun showToast(context: Context) {
+                Toast.makeText(context, "No connection", Toast.LENGTH_SHORT).show()
         }
 }

@@ -87,8 +87,12 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                val searchInput = binding.searchInput.text.toString()
-                retrieveMovieBySearch(searchInput)
+                if (Utilities.isNetworkAvailable(requireContext())) {
+                    val searchInput = binding.searchInput.text.toString()
+                    retrieveMovieBySearch(searchInput)
+                } else {
+                    Utilities.showToast(requireContext())
+                }
             }
         })
     }
