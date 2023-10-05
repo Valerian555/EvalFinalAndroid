@@ -28,6 +28,8 @@ object Utilities {
                         .load("$baseUrlImage$url")
                         .fit()
                         .centerCrop()
+                        .placeholder(R.drawable.no_image_placeholder)
+                        .error(R.drawable.no_image_placeholder)
                         .into(imageView)
         }
 

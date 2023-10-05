@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.technipixl.evalfinaleandroid.Utilities
 import com.technipixl.evalfinaleandroid.databinding.FragmentTrendingBinding
@@ -59,8 +60,12 @@ class TrendingFragment : Fragment() {
     private fun setupRecyclerView(movieResponse: MovieResponse) {
         binding.trendingRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         adapter = TrendingAdapter(movieResponse) { movie ->
-            // détail
+            movie.id?.let { goToDetails(it) }
         }
         binding.trendingRecyclerView.adapter = adapter
+    }
+
+    private fun goToDetails(movieId: Long) {
+        findNavController().navigate(TrendingFragmentDirections.actionTrendingFragmentToDetailFragment(movieId))
     }
 }

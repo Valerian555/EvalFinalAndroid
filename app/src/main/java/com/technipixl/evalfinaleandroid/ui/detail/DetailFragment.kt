@@ -91,9 +91,13 @@ class DetailFragment : Fragment() {
             requireContext(), RecyclerView.HORIZONTAL, false)
 
         adapter = SimilarAdapter(moviesResponse) { movie ->
-            //go to similarMovies details
+            movie.id?.let { goToDetails(it) }
         }
         binding.similarRecyclerView.adapter = adapter
+    }
+
+    private fun goToDetails(movieId: Long) {
+        findNavController().navigate(DetailFragmentDirections.actionDetailFragmentSelf(movieId))
     }
 
 
