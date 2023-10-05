@@ -1,35 +1,29 @@
 package com.technipixl.evalfinaleandroid.ui.detail
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.technipixl.evalfinaleandroid.Utilities
+import com.technipixl.evalfinaleandroid.Utilities.roundFloatToString
+import com.technipixl.evalfinaleandroid.Utilities.setupImage
 import com.technipixl.evalfinaleandroid.databinding.FragmentDetailBinding
 import com.technipixl.evalfinaleandroid.network.model.MovieDetailResponse
-import com.technipixl.evalfinaleandroid.network.model.SearchMovieResponse
-import com.technipixl.evalfinaleandroid.network.model.SimilarMoviesResponse
-import com.technipixl.evalfinaleandroid.network.service.MovieServiceImpl
-import com.technipixl.evalfinaleandroid.ui.search.SearchAdapter
+import com.technipixl.evalfinaleandroid.network.model.MovieResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import kotlin.math.roundToInt
 
 class DetailFragment : Fragment() {
     private lateinit var binding: FragmentDetailBinding
     private val args: DetailFragmentArgs by navArgs()
-    private val movieServiceImpl by lazy { MovieServiceImpl() }
-    private val apiKey = "55530312075972a425f5fa13e21b218f"
     private var adapter: SimilarAdapter? = null
 
     override fun onCreateView(
@@ -38,8 +32,10 @@ class DetailFragment : Fragment() {
     ): View {
         binding = FragmentDetailBinding.inflate(layoutInflater)
 
+        //récupération des films similaires
         retrieveMovieDetail(args.movieId)
 
+        //retour au frgament précédent
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -51,7 +47,7 @@ class DetailFragment : Fragment() {
 
     private fun retrieveMovieDetail(movieID: Long) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = movieServiceImpl.getMovieDetail(movieID, apiKey)
+            val response = Utilities.getMovieService().getMovieDetail(movieID, Utilities.API_KEY)
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {
@@ -68,7 +64,7 @@ class DetailFragment : Fragment() {
 
     private fun retrieveSimilarMovies(movieID: Long) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = movieServiceImpl.getSimilarMovies(movieID, apiKey)
+            val response = Utilities.getMovieService().getSimilarMovies(movieID, Utilities.API_KEY)
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {
@@ -87,12 +83,11 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView(similarMoviesResponse: SimilarMoviesResponse) {
+    private fun setupRecyclerView(moviesResponse: MovieResponse) {
         binding.similarRecyclerView.layoutManager = LinearLayoutManager(
             requireContext(), RecyclerView.HORIZONTAL, false)
 
-        //3. ajouter la variable
-        adapter = SimilarAdapter(similarMoviesResponse) { movie ->
+        adapter = SimilarAdapter(moviesResponse) { movie ->
             //go to similarMovies details
         }
         binding.similarRecyclerView.adapter = adapter
@@ -109,18 +104,5 @@ class DetailFragment : Fragment() {
         binding.movieReview.text = movieDetailResponse.vote_average?.let { roundFloatToString(it).toString() }
         binding.movieName.text = movieDetailResponse.original_title
         binding.movieOverview.text = movieDetailResponse.overview
-    }
-
-    private fun roundFloatToString(number: Float): Float {
-        return (number * 10.0f).roundToInt() / 10.0f
-    }
-
-    private fun setupImage(url: String, imageView: ImageView) {
-        val baseUrlImage = "https://image.tmdb.org/t/p/w500"
-        Picasso.get()
-            .load("$baseUrlImage$url")
-            .fit()
-            .centerCrop()
-            .into(imageView)
     }
 }

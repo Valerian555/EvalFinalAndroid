@@ -5,15 +5,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.technipixl.evalfinaleandroid.Utilities.roundFloatToString
+import com.technipixl.evalfinaleandroid.Utilities.setupImage
 import com.technipixl.evalfinaleandroid.databinding.SearchItemLayoutBinding
 import com.technipixl.evalfinaleandroid.network.model.Movie
-import com.technipixl.evalfinaleandroid.network.model.SearchMovieResponse
+import com.technipixl.evalfinaleandroid.network.model.MovieResponse
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.math.roundToInt
 
 class SearchAdapter(
-    private val searchMovieResponse: SearchMovieResponse,
+    private val movieResponse: MovieResponse,
     private val onItemClick: (Movie) -> Unit
 ): RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
@@ -23,7 +25,6 @@ class SearchAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun setup(movie: Movie) {
-
             binding.movieName.text = movie.original_title
             binding.movieReleaseDate.text = movie.release_date?.let { formatDate(it) }
             binding.movieReview.text = movie.vote_average?.let { roundFloatToString(it).toString() }
@@ -32,10 +33,6 @@ class SearchAdapter(
             binding.container.setOnClickListener {
                 onItemClick(movie)
             }
-        }
-
-        private fun roundFloatToString(number: Float): Float {
-            return (number * 10.0f).roundToInt() / 10.0f
         }
 
         private fun formatDate(dateString: String): String {
@@ -49,16 +46,6 @@ class SearchAdapter(
             }
             return ""
         }
-
-        private fun setupImage(url: String, imageView: ImageView) {
-            val baseUrlImage = "https://image.tmdb.org/t/p/w500"
-            Picasso.get()
-                .load("$baseUrlImage$url")
-                .fit()
-                .centerCrop()
-                .into(imageView)
-        }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -69,10 +56,10 @@ class SearchAdapter(
     }
 
     override fun getItemCount(): Int {
-        return searchMovieResponse.results.size
+        return movieResponse.results.size
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.setup(searchMovieResponse.results[position])
+        holder.setup(movieResponse.results[position])
     }
 }

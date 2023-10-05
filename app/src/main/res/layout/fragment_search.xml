@@ -6,13 +6,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.search.SearchFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/no_data_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_input"
+        android:background="@color/black">
+
+        <ImageView
+            android:id="@+id/no_data_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/nodata_ico"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sorry there's nothing to display."
+            app:layout_constraintEnd_toEndOf="@+id/no_data_image"
+            app:layout_constraintStart_toStartOf="@+id/no_data_image"
+            app:layout_constraintTop_toBottomOf="@id/no_data_image"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/search_input"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/search_ico"
+        android:layout_height="50dp"
+        android:drawableLeft="@drawable/baseline_search_24"
         android:hint="Search the movie"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/red"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recycler_view"

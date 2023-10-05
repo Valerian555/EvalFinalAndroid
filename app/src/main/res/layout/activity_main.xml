@@ -22,6 +22,7 @@
         android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nav_host_fragment"
-        app:menu="@menu/bottombar_menu"/>
+        app:menu="@menu/bottombar_menu"
+        android:background="@color/red" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

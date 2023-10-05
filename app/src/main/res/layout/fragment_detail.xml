@@ -23,15 +23,24 @@
         android:scaleType="fitXY"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"/>
-    
-    <ImageView
-        android:id="@+id/movie_image"
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/movie_image_cardview"
         android:layout_width="100dp"
         android:layout_height="150dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/background_poster"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="-80dp"/>
+        android:layout_marginTop="-80dp"
+        app:cardCornerRadius="10dp">
+
+        <ImageView
+            android:id="@+id/movie_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/imageView"
@@ -62,8 +71,8 @@
         android:id="@+id/movie_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/movie_image"
-        app:layout_constraintBottom_toBottomOf="@id/movie_image"
+        app:layout_constraintStart_toEndOf="@id/movie_image_cardview"
+        app:layout_constraintBottom_toBottomOf="@id/movie_image_cardview"
         android:layout_marginStart="20dp"
         android:text="Movie Name"
         android:ellipsize="end"
@@ -78,8 +87,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Synopsis"
-        app:layout_constraintTop_toBottomOf="@id/movie_image"
-        app:layout_constraintStart_toStartOf="@id/movie_image"
+        app:layout_constraintTop_toBottomOf="@id/movie_image_cardview"
+        app:layout_constraintStart_toStartOf="@id/movie_image_cardview"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_marginTop="10dp"/>
@@ -104,12 +113,13 @@
         android:textStyle="bold"
         android:textColor="@color/black"
         android:layout_marginTop="30dp"/>
-    
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/similar_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/similar_title"
-        android:layout_marginTop="10dp"/>
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/similar_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

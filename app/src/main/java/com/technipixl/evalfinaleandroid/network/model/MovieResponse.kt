@@ -1,7 +1,6 @@
 package com.technipixl.evalfinaleandroid.network.model
 
-
-data class SearchMovieResponse(
+data class MovieResponse(
     val results: MutableList<Movie>
 )
 
