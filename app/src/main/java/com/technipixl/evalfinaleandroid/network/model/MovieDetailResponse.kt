@@ -1,14 +1,9 @@
 package com.technipixl.evalfinaleandroid.network.model
 
-
-data class SearchMovieResponse(
-    val results: MutableList<Movie>
-)
-
-data class Movie(
-    val id: Long?,
+data class MovieDetailResponse(
     val original_title: String?,
+    val backdrop_path: String?,
     val poster_path: String?,
-    val release_date: String?,
     val vote_average: Float?,
+    val overview: String?
 )
